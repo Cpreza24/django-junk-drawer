@@ -71,13 +71,20 @@ def rooms_delete(request, room_id):
 
 @login_required
 def profile(request):
+    # Get or create the user profile
+    user_profile, created = UserProfile.objects.get_or_create(user=request.user)
+    
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, instance=request.user.userprofile)
+        form = UserProfileForm(request.POST, instance=user_profile)
         if form.is_valid():
-            form.save()
+            profile = form.save(commit=False)
+            # Ensure we're properly handling the birth date
+            if 'birth_date' in request.POST and request.POST['birth_date']:
+                profile.birth_date = request.POST['birth_date']
+            profile.save()
             return redirect('profile')
     else:
-        form = UserProfileForm(instance=request.user.userprofile)
+        form = UserProfileForm(instance=user_profile)
     return render(request, 'registration/profile.html', {'form': form})
 
 @login_required

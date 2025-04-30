@@ -19,11 +19,24 @@ class UserRegistrationForm(UserCreationForm):
         fields = ['username', 'email', 'password1', 'password2']
 
 class UserProfileForm(forms.ModelForm):
+    birth_date = forms.DateField(
+        widget=forms.DateInput(
+            attrs={
+                'type': 'date',
+                'class': 'form-control'
+            },
+            format='%Y-%m-%d'
+        ),
+        required=False,
+        input_formats=['%Y-%m-%d']
+    )
+    
     class Meta:
         model = UserProfile
         fields = ['bio', 'location', 'birth_date']
         widgets = {
-            'birth_date': forms.DateInput(attrs={'type': 'date'})
+            'bio': forms.Textarea(attrs={'rows': 4, 'class': 'form-control'}),
+            'location': forms.TextInput(attrs={'placeholder': 'Where are you from?', 'class': 'form-control'}),
         }
 
 class ItemForm(forms.ModelForm):

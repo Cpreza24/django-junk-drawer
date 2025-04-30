@@ -91,7 +91,7 @@ WSGI_APPLICATION = 'junkdrawer.wsgi.application'
 #         'PORT': os.getenv('DB_PORT'),
 #     }
 # }
-if 'ON_HEROKU' in os.environ:
+if 'DATABASE_URL' in os.environ:
     DATABASES = {
         "default": dj_database_url.config(
             env='DATABASE_URL',

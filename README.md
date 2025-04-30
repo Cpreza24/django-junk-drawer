@@ -1,44 +1,80 @@
-# Getting Started
-### Clone repo to your local machine
-    git clone https://github.com/Cpreza24/django-junk-drawer.git
+# Junk Drawer App
 
-### Install Django
-    pipenv install django
-wait for terminal to show 
--> django-junk-drawer git (main) then run: (enters virtual enviornment)
-    
-    pipenv shell
+![Junk Drawer Screenshot](./junk_app/static/images/junk_screenshot.PNG)  
+*A minimalist home organization tool to keep track of the little things you always lose.*
 
-### Open project in your IDE (depending on your IDE)
-    cursor . 
-    code .
+---
 
-### Inside IDE teriminal install dependancies 
-    pipenv install
+## About the App
 
-### Create your ENV file
-    touch .env
-refer to .env.example for variable values 
-add your .env to .gitignore
+**Junk Drawer** is a full-stack CRUD web application that helps users track household items by organizing them into rooms—think of it as a digital version of the chaotic catch-all drawer in every home.
 
-### In IDE Terminal run:
-    1. createdb junkdrawer 
-    2. python3 manage.py migrate
-    3. python3 manage.py runserver
+Each user can:
 
-### Check Database connection (optional)
-In the terminal run 
-    
-    1. psql -b junkdrawer
-    2. \dt 
+- Sign up and log in
+- Create rooms (e.g., Kitchen, Bathroom, Garage)
+- Add, edit, and delete items stored in each room
 
-Displays the tables created by Django 
+The idea came from our team’s experience constantly losing everyday tools and gadgets around the house. We built this app as part of a General Assembly Django project to explore full-stack development, teamwork, and scalable app design.
 
-q returns you to Postgres shell
+---
 
-exit or \q quits the Postgres CLI 
+## Getting Started
 
+###  Live App
 
-### Create a branch to start working on your sections
-    git checkout -b branch_name
+[Visit the Deployed App](https://junk-drawer-app-1b15c6153bee.herokuapp.com/)
 
+### Planning Materials
+
+- [Trello Board](https://trello.com/b/S9VG9FDz/junk-drawer)
+- [GitHub Repo](https://github.com/Cpreza24/django-junk-drawer)
+
+### To run locally
+
+```bash
+git clone https://github.com/Cpreza24/django-junk-drawer.git
+cd django-junk-drawer
+pipenv install
+pipenv shell
+python3 manage.py runserver
+```
+
+---
+
+## Technologies Used
+
+- Python 3  
+- Django  
+- PostgreSQL  
+- HTML5 / CSS3  
+- JavaScript  
+- Bootstrap  
+- Trello (project management)  
+- Heroku (deployment)
+
+---
+
+## Next Steps / Stretch Goals
+
+1. **Tags**  
+   Add optional tags to items for easier filtering and organization  
+   _Examples: tools, tech, emergency, kitchenware, toiletries, clothes_
+
+2. **Search & Sort**  
+   Implement the ability to search across all rooms and sort items by room
+
+3. **Responsive Design**  
+   Improve mobile usability and overall visual layout
+
+4. **Image Uploads**  
+   Enable users to attach images to their items for better identification
+
+---
+
+## Built By
+
+- Cesar Preza  
+- Isaac Jean Baptiste  
+- Onye Iwuorie  
+- Matt Mendez Zugenbuehler

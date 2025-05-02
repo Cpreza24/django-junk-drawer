@@ -12,7 +12,6 @@ urlpatterns = [
     path('rooms/<int:room_id>/edit/', views.rooms_edit, name='rooms_edit'),
     path('rooms/<int:room_id>/update/', views.rooms_update, name='rooms_update'),
     path('rooms/<int:room_id>/delete/', views.rooms_delete, name='rooms_delete'),
-    # Items URLs
     path('items/', views.items_index, name='items_index'),
     path('items/new/', views.items_new, name='items_new'),
     path('items/create/', views.items_create, name='items_create'),

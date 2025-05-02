@@ -50,9 +50,6 @@ class ItemForm(forms.ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(ItemForm, self).__init__(*args, **kwargs)
-        # Filter rooms to only show the current user's rooms
         self.fields['room'].queryset = Room.objects.filter(user=user)
-        # Make room selection optional
         self.fields['room'].required = False
-        # Add placeholder for room selection
         self.fields['room'].empty_label = "-- Select a Room --"

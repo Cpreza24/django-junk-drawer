@@ -26,27 +26,34 @@ def signup(request):
 
 @login_required
 def rooms_index(request):
-    search_query = request.GET.get('search', '')
-    sort_by = request.GET.get('sort', 'name')
-    rooms = Room.objects.filter(user=request.user)
-    
-    # Apply search if query exists
-    if search_query:
-        rooms = rooms.filter(name__icontains=search_query)
-    
-    # Sorting options
-    if sort_by == 'name':
-        rooms = rooms.order_by('name')
-    elif sort_by == 'created':
-        rooms = rooms.order_by('-created_at')
-    elif sort_by == 'updated':
-        rooms = rooms.order_by('-updated_at')
-    
-    return render(request, 'rooms/index.html', {
-        'rooms': rooms,
-        'search_query': search_query,
-        'sort_by': sort_by
-    })
+    try:
+        search_query = request.GET.get('search', '')
+        sort_by = request.GET.get('sort', 'name')
+        
+        rooms = Room.objects.filter(user=request.user)
+        
+        if search_query:
+            rooms = rooms.filter(name__icontains=search_query)
+        
+        if sort_by == 'name':
+            rooms = rooms.order_by('name')
+        elif sort_by == 'created':
+            rooms = rooms.order_by('-created_at')
+        elif sort_by == 'updated':
+            rooms = rooms.order_by('-updated_at')
+        
+        return render(request, 'rooms/index.html', {
+            'rooms': rooms,
+            'search_query': search_query,
+            'sort_by': sort_by
+        })
+    except Exception as e:
+        print(f"Error in rooms_index: {str(e)}")
+        return render(request, 'rooms/index.html', {
+            'rooms': [],
+            'search_query': '',
+            'sort_by': 'name'
+        })
 
 @login_required
 def rooms_new(request):
@@ -92,7 +99,6 @@ def rooms_delete(request, room_id):
 
 @login_required
 def profile(request):
-    # Get or create the user profile
     user_profile, created = UserProfile.objects.get_or_create(user=request.user)
     
     if request.method == 'POST':
@@ -110,7 +116,6 @@ def profile(request):
 
 @login_required
 def items_index(request):
-    # Check if user has any rooms
     rooms = Room.objects.filter(user=request.user)
     if not rooms.exists():
         messages.info(request, "Please create a room before adding items.")
@@ -122,18 +127,15 @@ def items_index(request):
     
     items = Item.objects.filter(user=request.user)
     
-    # Apply search if query exists
     if search_query:
         items = items.filter(
             Q(name__icontains=search_query) |
             Q(description__icontains=search_query)
         )
     
-    # Filter by room if specified
     if room_filter:
         items = items.filter(room_id=room_filter)
     
-    # Sorting options
     if sort_by == 'name':
         items = items.order_by('name')
     elif sort_by == 'created':
@@ -153,7 +155,6 @@ def items_index(request):
 
 @login_required
 def items_new(request):
-    # Check if user has any rooms
     rooms = Room.objects.filter(user=request.user)
     if not rooms.exists():
         messages.info(request, "Please create a room before adding items.")

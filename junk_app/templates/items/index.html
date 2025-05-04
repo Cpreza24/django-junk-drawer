@@ -7,8 +7,28 @@
 <div class="container">
     <div class="header-section">
         <h1>My Items</h1>
-        <a href="{% url 'items_new' %}" class="btn btn-primary">Add New Item</a>
+        <div class="header-actions">
+            <form method="GET" class="search-form">
+                <input type="text" name="search" value="{{ search_query }}" placeholder="Search items..." class="search-input">
+                <select name="room" class="filter-select">
+                    <option value="">All Rooms</option>
+                    {% for room in rooms %}
+                    <option value="{{ room.id }}" {% if room_filter == room.id|stringformat:"i" %}selected{% endif %}>
+                        {{ room.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <select name="sort" class="sort-select">
+                    <option value="name" {% if sort_by == 'name' %}selected{% endif %}>Name</option>
+                    <option value="created" {% if sort_by == 'created' %}selected{% endif %}>Created</option>
+                    <option value="updated" {% if sort_by == 'updated' %}selected{% endif %}>Updated</option>
+                    <option value="quantity" {% if sort_by == 'quantity' %}selected{% endif %}>Quantity</option>
+                </select>
+            </form>
+            <a href="{% url 'items_new' %}" class="btn btn-primary">Add New Item</a>
+        </div>
     </div>
+
     {% if items %}
     <div class="items-grid">
         {% for item in items %}
@@ -30,7 +50,7 @@
     </div>
     {% else %}
     <div class="empty-state">
-        <p>No items found. Start by adding a new item!</p>
+        <p>No items found in your rooms. Start by adding your first item!</p>
         <a href="{% url 'items_new' %}" class="btn btn-primary">Add Your First Item</a>
     </div>
     {% endif %}

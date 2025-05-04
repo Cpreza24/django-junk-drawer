@@ -8,8 +8,14 @@
 
     {% if user.is_authenticated %}
       <div class="actions">
-        <a href="{% url 'rooms_index' %}" class="btn btn-primary">View My Rooms</a>
-        <a href="{% url 'rooms_new' %}" class="btn btn-secondary">Add a New Room</a>
+        <div class="welcome-section">
+          <h2 class="mb-3">Getting Started</h2>
+          <p class="mb-4">First, create a room to organize your items. Then you can start adding items to your rooms.</p>
+          <div class="action-buttons">
+            <a href="{% url 'rooms_new' %}" class="btn btn-primary">Create Your First Room</a>
+            <a href="{% url 'rooms_index' %}" class="btn btn-secondary">View My Rooms</a>
+          </div>
+        </div>
       </div>
     {% else %}
       <div class="actions">

@@ -5,6 +5,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from .forms import UserRegistrationForm, UserProfileForm, ItemForm, RoomForm
 from .models import Room, Item, UserProfile
+from django.db.models import Q
+from django.contrib import messages
 
 
 @login_required
@@ -24,8 +26,27 @@ def signup(request):
 
 @login_required
 def rooms_index(request):
+    search_query = request.GET.get('search', '')
+    sort_by = request.GET.get('sort', 'name')
     rooms = Room.objects.filter(user=request.user)
-    return render(request, 'rooms/index.html', {'rooms': rooms})
+    
+    # Apply search if query exists
+    if search_query:
+        rooms = rooms.filter(name__icontains=search_query)
+    
+    # Sorting options
+    if sort_by == 'name':
+        rooms = rooms.order_by('name')
+    elif sort_by == 'created':
+        rooms = rooms.order_by('-created_at')
+    elif sort_by == 'updated':
+        rooms = rooms.order_by('-updated_at')
+    
+    return render(request, 'rooms/index.html', {
+        'rooms': rooms,
+        'search_query': search_query,
+        'sort_by': sort_by
+    })
 
 @login_required
 def rooms_new(request):
@@ -89,11 +110,55 @@ def profile(request):
 
 @login_required
 def items_index(request):
+    # Check if user has any rooms
+    rooms = Room.objects.filter(user=request.user)
+    if not rooms.exists():
+        messages.info(request, "Please create a room before adding items.")
+        return redirect('rooms_new')
+
+    search_query = request.GET.get('search', '')
+    sort_by = request.GET.get('sort', 'name')
+    room_filter = request.GET.get('room', '')
+    
     items = Item.objects.filter(user=request.user)
-    return render(request, 'items/index.html', {'items': items})
+    
+    # Apply search if query exists
+    if search_query:
+        items = items.filter(
+            Q(name__icontains=search_query) |
+            Q(description__icontains=search_query)
+        )
+    
+    # Filter by room if specified
+    if room_filter:
+        items = items.filter(room_id=room_filter)
+    
+    # Sorting options
+    if sort_by == 'name':
+        items = items.order_by('name')
+    elif sort_by == 'created':
+        items = items.order_by('-created_at')
+    elif sort_by == 'updated':
+        items = items.order_by('-updated_at')
+    elif sort_by == 'quantity':
+        items = items.order_by('-quantity')
+    
+    return render(request, 'items/index.html', {
+        'items': items,
+        'search_query': search_query,
+        'sort_by': sort_by,
+        'room_filter': room_filter,
+        'rooms': rooms
+    })
 
 @login_required
 def items_new(request):
+    # Check if user has any rooms
+    rooms = Room.objects.filter(user=request.user)
+    if not rooms.exists():
+        messages.info(request, "Please create a room before adding items.")
+        return redirect('rooms_new')
+
     form = ItemForm(request.user)
     return render(request, 'items/new.html', {'form': form})
 

@@ -7,6 +7,7 @@ from .forms import UserRegistrationForm, UserProfileForm, ItemForm, RoomForm
 from .models import Room, Item, UserProfile
 from django.db.models import Q
 from django.contrib import messages
+from django.utils import timezone
 
 
 @login_required
@@ -64,16 +65,25 @@ def rooms_create(request):
     try:
         if request.method == 'POST':
             name = request.POST.get('name', '').strip()
+            print(f"Attempting to create room with name: {name}")  # Debug log
+            
             if not name:
                 messages.error(request, "Room name cannot be empty")
                 return redirect('rooms_new')
             
-            room = Room.objects.create(name=name, user=request.user)
-            messages.success(request, f"Room '{name}' created successfully")
-            return redirect('rooms_detail', room_id=room.id)
+            try:
+                room = Room.objects.create(name=name, user=request.user)
+                print(f"Room created successfully with ID: {room.id}")  # Debug log
+                messages.success(request, f"Room '{name}' created successfully")
+                return redirect('rooms_detail', room_id=room.id)
+            except Exception as create_error:
+                print(f"Error creating room: {str(create_error)}")  # Debug log
+                messages.error(request, f"Error creating room: {str(create_error)}")
+                return redirect('rooms_new')
+                
         return redirect('rooms_index')
     except Exception as e:
-        print(f"Error in rooms_create: {str(e)}")
+        print(f"Error in rooms_create: {str(e)}")  # Debug log
         messages.error(request, "An error occurred while creating the room")
         return redirect('rooms_new')
 

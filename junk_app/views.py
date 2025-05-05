@@ -58,7 +58,8 @@ def rooms_index(request):
 
 @login_required
 def rooms_new(request):
-    return render(request, 'rooms/new.html')
+    form = RoomForm()
+    return render(request, 'rooms/new.html', {'form': form})
 
 @login_required
 def rooms_create(request):

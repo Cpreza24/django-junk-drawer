@@ -61,11 +61,21 @@ def rooms_new(request):
 
 @login_required
 def rooms_create(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        room = Room.objects.create(name=name, user=request.user)
-        return redirect('rooms_detail', room_id=room.id)
-    return redirect('rooms_index')
+    try:
+        if request.method == 'POST':
+            name = request.POST.get('name', '').strip()
+            if not name:
+                messages.error(request, "Room name cannot be empty")
+                return redirect('rooms_new')
+            
+            room = Room.objects.create(name=name, user=request.user)
+            messages.success(request, f"Room '{name}' created successfully")
+            return redirect('rooms_detail', room_id=room.id)
+        return redirect('rooms_index')
+    except Exception as e:
+        print(f"Error in rooms_create: {str(e)}")
+        messages.error(request, "An error occurred while creating the room")
+        return redirect('rooms_new')
 
 @login_required
 def rooms_detail(request, room_id):

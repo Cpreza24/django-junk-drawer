@@ -64,23 +64,16 @@ def rooms_new(request):
 def rooms_create(request):
     try:
         if request.method == 'POST':
-            name = request.POST.get('name', '').strip()
-            print(f"Attempting to create room with name: {name}")  # Debug log
-            
-            if not name:
-                messages.error(request, "Room name cannot be empty")
-                return redirect('rooms_new')
-            
-            try:
-                room = Room.objects.create(name=name, user=request.user)
-                print(f"Room created successfully with ID: {room.id}")  # Debug log
-                messages.success(request, f"Room '{name}' created successfully")
+            form = RoomForm(request.POST)
+            if form.is_valid():
+                room = form.save(commit=False)
+                room.user = request.user
+                room.save()
+                messages.success(request, f"Room '{room.name}' created successfully")
                 return redirect('rooms_detail', room_id=room.id)
-            except Exception as create_error:
-                print(f"Error creating room: {str(create_error)}")  # Debug log
-                messages.error(request, f"Error creating room: {str(create_error)}")
+            else:
+                messages.error(request, "Please correct the errors below.")
                 return redirect('rooms_new')
-                
         return redirect('rooms_index')
     except Exception as e:
         print(f"Error in rooms_create: {str(e)}")  # Debug log

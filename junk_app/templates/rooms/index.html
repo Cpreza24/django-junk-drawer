@@ -9,7 +9,10 @@
         <h1>My Rooms</h1>
         <div class="header-actions">
             <form method="GET" class="search-form">
-                <input type="text" name="search" value="{{ search_query }}" placeholder="Search rooms..." class="search-input">
+                <div class="search-input-group">
+                    <input type="text" name="search" value="{{ search_query }}" placeholder="Search rooms..." class="search-input">
+                    <button type="submit" class="btn btn-secondary search-btn">Search</button>
+                </div>
                 <select name="sort" class="sort-select">
                     <option value="name" {% if sort_by == 'name' %}selected{% endif %}>Name</option>
                     <option value="created" {% if sort_by == 'created' %}selected{% endif %}>Created</option>

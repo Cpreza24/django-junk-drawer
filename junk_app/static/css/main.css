@@ -203,13 +203,22 @@ body {
     align-items: center;
 }
 
+.search-input-group {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
 .search-input {
+    flex: 1;
     padding: 0.5rem;
     border: 1px solid #ddd;
     border-radius: 4px;
-    font-size: 0.9rem;
-    min-width: 200px;
-    background-color: #f8f9fa;
+}
+
+.search-btn {
+    white-space: nowrap;
+    padding: 0.5rem 1rem;
 }
 
 .filter-select,

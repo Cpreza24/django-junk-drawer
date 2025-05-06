@@ -9,7 +9,10 @@
         <h1>My Items</h1>
         <div class="header-actions">
             <form method="GET" class="search-form">
-                <input type="text" name="search" value="{{ search_query }}" placeholder="Search items..." class="search-input">
+                <div class="search-input-group">
+                    <input type="text" name="search" value="{{ search_query }}" placeholder="Search items..." class="search-input">
+                    <button type="submit" class="btn btn-secondary search-btn">Search</button>
+                </div>
                 <select name="room" class="filter-select">
                     <option value="">All Rooms</option>
                     {% for room in rooms %}

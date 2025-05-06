@@ -61,13 +61,10 @@ python3 manage.py runserver
    Add optional tags to items for easier filtering and organization  
    _Examples: tools, tech, emergency, kitchenware, toiletries, clothes_
 
-2. **Search & Sort**  
-   Implement the ability to search across all rooms and sort items by room
-
-3. **Responsive Design**  
+2. **Responsive Design**  
    Improve mobile usability and overall visual layout
 
-4. **Image Uploads**  
+3. **Image Uploads**  
    Enable users to attach images to their items for better identification
 
 ---

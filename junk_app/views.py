@@ -171,7 +171,6 @@ def items_index(request):
 def items_new(request):
     rooms = Room.objects.filter(user=request.user)
     if not rooms.exists():
-        messages.info(request, "Please create a room before adding items.")
         return redirect('rooms_new')
 
     form = ItemForm(request.user)
